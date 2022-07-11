@@ -1,4 +1,4 @@
-import { Method, Service, Type } from '@cldcvr/protobufjs';
+import { Method, Service, Type } from 'protobufjs';
 import { getCommentBlock, getImport, Import, toLowerCaseFirstLetter } from './utils';
 
 export function getServiceInfo(service: Service) {

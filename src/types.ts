@@ -1,4 +1,4 @@
-import { Type } from '@cldcvr/protobufjs';
+import { Type } from 'protobufjs';
 import { getEnumCode } from './enums';
 import { ProtoGenOptions } from './options';
 import {

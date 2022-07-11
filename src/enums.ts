@@ -1,4 +1,4 @@
-import { Enum } from '@cldcvr/protobufjs';
+import { Enum } from 'protobufjs';
 import { getCommentBlock } from './utils';
 
 export function getEnumCode(enum_: Enum) {

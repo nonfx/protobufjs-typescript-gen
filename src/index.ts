@@ -1,4 +1,4 @@
-import protobuf, { Enum, Namespace, Service, Type } from '@cldcvr/protobufjs';
+import protobuf, { Enum, Namespace, Service, Type } from 'protobufjs';
 import { emptyDirSync, outputFileSync } from 'fs-extra';
 import { glob } from 'glob';
 import path from 'path';

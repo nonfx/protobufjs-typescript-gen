@@ -1,4 +1,4 @@
-import { Enum, FieldBase, Namespace, ReflectionObject, Service, Type } from '@cldcvr/protobufjs';
+import { Enum, FieldBase, Namespace, ReflectionObject, Service, Type } from 'protobufjs';
 import { ProtoGenOptions } from './options';
 
 export function getCommentBlock(object: ReflectionObject) {
