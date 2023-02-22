@@ -70,6 +70,8 @@ export interface Complex {
 // Make sure this doesn't conflict with the other Complex message.
 export interface OuterMessage_Complex {
     innerComplexField?: number;
+    value?: unknown;
+    struct?: Record<string, unknown>;
 }
 
 export interface OuterMessage {}
@@ -85,7 +87,7 @@ export interface DefaultValues {
     // Options: [{"default":true}]
     boolField?: boolean;
     // Options: [{"default":11}]
-    intField?: number;
+    intField?: string;
     // Options: [{"default":"E1"}]
     enumField?: Enum;
     // Options: [{"default":""}]
@@ -181,7 +183,7 @@ export interface TestEndsWithBytes {
 export interface TestMapFieldsNoBinary {
     mapStringString?: Record<string, string>;
     mapStringInt32?: Record<string, number>;
-    mapStringInt64?: Record<string, number>;
+    mapStringInt64?: Record<string, string>;
     mapStringBool?: Record<string, boolean>;
     mapStringDouble?: Record<string, number>;
     mapStringEnum?: Record<string, MapValueEnumNoBinary>;

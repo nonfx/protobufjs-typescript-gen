@@ -113,35 +113,39 @@ export function fieldToTypescriptType(field: FieldBase, options: ProtoGenOptions
         case 'sfixed32':
             type = 'number';
             break;
+
         case 'int64':
         case 'uint64':
         case 'sint64':
         case 'fixed64':
         case 'sfixed64':
             // type = config.forceLong ? "Long" : config.forceNumber ? "number" : "number|Long";
-            type = 'number';
+            type = options.uint64ToNumber ? 'number' : 'string';
             break;
+
         case 'bool':
             type = 'boolean';
             break;
+
         case 'string':
             type = 'string';
             break;
+
         case 'bytes':
             type = 'Uint8Array';
             break;
 
         // Custom protobuf mapping
         case 'google.protobuf.Value':
-            type = 'any';
+            type = options.anyToUnknown ? 'unknown' : 'any';
             break;
 
         case 'google.protobuf.ListValue':
-            type = 'any[]';
+            type = options.anyToUnknown ? 'unknown[]' : 'any[]';
             break;
 
         case 'google.protobuf.Struct':
-            type = 'Record<string, any>';
+            type = options.anyToUnknown ? 'Record<string, unknown>' : 'Record<string, any>';
             break;
 
         case 'google.protobuf.Empty':

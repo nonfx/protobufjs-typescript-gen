@@ -29,6 +29,14 @@ export function vaidateOptions(options?: UserOptions): ProtoGenOptions {
         options.repeatedFieldIsRequired = false;
     }
 
+    if (!('uint64ToNumber' in options)) {
+        options.uint64ToNumber = false;
+    }
+
+    if (!('anyToUnknown' in options)) {
+        options.anyToUnknown = false;
+    }
+
     return options as ProtoGenOptions;
 }
 
@@ -41,4 +49,6 @@ export type UserOptions = {
     cwd?: string;
     repeatedFieldIsRequired?: boolean;
     prettierConfig?: prettier.Options;
+    uint64ToNumber?: boolean;
+    anyToUnknown?: boolean;
 };

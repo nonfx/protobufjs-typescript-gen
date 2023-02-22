@@ -34,7 +34,9 @@ syntax = "proto2";
 
 option java_package = "com.google.apps.jspb.proto";
 
+import "google/protobuf/empty.proto";
 import "google/protobuf/descriptor.proto";
+import "google/protobuf/struct.proto";
 
 package basic;
 
@@ -103,6 +105,8 @@ message OuterMessage {
   // Make sure this doesn't conflict with the other Complex message.
   message Complex {
     optional int32 inner_complex_field = 1;
+    optional google.protobuf.Value value = 2;
+    optional google.protobuf.Struct struct = 3;
   }
 }
 
