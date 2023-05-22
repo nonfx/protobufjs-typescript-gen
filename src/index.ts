@@ -18,7 +18,7 @@ import {
 
 const root = new protobuf.Root();
 
-export function generateProtocol(options: UserOptions) {
+export async function generateProtocol(options: UserOptions) {
     const finalOptions = vaidateOptions(options);
 
     root.resolvePath = function (_origin, target) {
@@ -30,11 +30,17 @@ export function generateProtocol(options: UserOptions) {
         ignore: options.ignoreFiles,
     });
 
+    const promises: Array<Promise<any>> = [];
+
     files.forEach((file) => {
-        root.loadSync(file, {
-            alternateCommentMode: true,
-        });
+        promises.push(
+            root.load(file, {
+                alternateCommentMode: true,
+            })
+        );
     });
+
+    await Promise.all(promises);
 
     // Clear output directory
     emptyDirSync(finalOptions.outDir);

@@ -1,11 +1,11 @@
 {
   "name": "@cldcvr/protobufjs-typescript-gen",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "author": "Nikhil Verma <nikhilgotmail@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "debug": "node --inspect-brk -r ts-node/register src/main.ts",
+    "debug": "node --inspect-brk -r ts-node/register ./debug.ts",
     "build": "rm -rf dist && tsc",
     "prepublishOnly": "pnpm build"
   },
