@@ -190,3 +190,11 @@ export function getImportString(imports: Map<string, Set<string>>) {
         })
         .join('\n');
 }
+
+export function safeObjectKey(key: string) {
+    if (key.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/)) {
+        return key;
+    }
+
+    return `["${key}"]`;
+}

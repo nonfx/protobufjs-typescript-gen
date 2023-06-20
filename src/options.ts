@@ -37,6 +37,10 @@ export function vaidateOptions(options?: UserOptions): ProtoGenOptions {
         options.anyToUnknown = false;
     }
 
+    if (!('ignoreNamespaces' in options)) {
+        options.ignoreNamespaces = ['grpc', 'validate', 'google'];
+    }
+
     return options as ProtoGenOptions;
 }
 
@@ -45,7 +49,8 @@ export type ProtoGenOptions = Required<UserOptions>;
 export type UserOptions = {
     outDir: string;
     protocolDir: string;
-    ignoreFiles?: string[];
+    protoCwd?: string;
+    ignoreNamespaces?: string[];
     cwd?: string;
     repeatedFieldIsRequired?: boolean;
     prettierConfig?: prettier.Options;

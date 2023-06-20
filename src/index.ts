@@ -1,5 +1,5 @@
 import protobuf, { Enum, Namespace, Service, Type } from 'protobufjs';
-import { emptyDirSync, outputFileSync } from 'fs-extra';
+import { emptyDirSync, outputFileSync, existsSync } from 'fs-extra';
 import { glob } from 'glob';
 import path from 'path';
 import prettier from 'prettier';
@@ -21,13 +21,27 @@ const root = new protobuf.Root();
 export async function generateProtocol(options: UserOptions) {
     const finalOptions = vaidateOptions(options);
 
+    // The places where protocol files can be found
+    const cwdList = [finalOptions.protocolDir, '/usr/local/include', ''];
+
+    if (finalOptions.protoCwd) {
+        cwdList.unshift(finalOptions.protoCwd);
+    }
+
     root.resolvePath = function (_origin, target) {
-        return path.join(finalOptions.protocolDir, target);
+        for (const cwdPath of cwdList) {
+            const jointPath = path.join(cwdPath, target);
+            if (existsSync(jointPath)) {
+                return jointPath;
+            }
+        }
+
+        return target;
     };
 
     const files = glob.sync('**/*.proto', {
+        absolute: true,
         cwd: options.protocolDir,
-        ignore: options.ignoreFiles,
     });
 
     const promises: Array<Promise<any>> = [];
@@ -50,14 +64,23 @@ export async function generateProtocol(options: UserOptions) {
         throw new Error('Could not find any protocols in root');
     }
 
+    let generatedFiles = 0;
+
     // We only generate namespaces in the root
-    Object.values(root.nested).forEach((type) => {
+    Object.entries(root.nested).forEach(([key, type]) => {
+        for (const namespace of finalOptions.ignoreNamespaces) {
+            if (key === namespace) {
+                return;
+            }
+        }
+
         if (isNamespaceConstructor(type)) {
+            generatedFiles++;
             generateNamespace(type, finalOptions);
         }
     });
 
-    console.log(`Generated ${files.length} protocol files.`);
+    console.log(`Generated ${generatedFiles} protocol files.`);
 }
 
 function generateNamespace(namespace: Namespace, options: ProtoGenOptions) {

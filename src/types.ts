@@ -7,6 +7,7 @@ import {
     Import,
     isEnumConstructor,
     isTypeConstructor,
+    safeObjectKey,
 } from './utils';
 
 export function getTypeInfo(type_: Type, options: ProtoGenOptions) {
@@ -37,9 +38,9 @@ export function getTypeInfo(type_: Type, options: ProtoGenOptions) {
             imports.push(fieldType.typeImport);
         }
 
-        typeString += `${getCommentBlock(field)}${field.name}${fieldType.isOptional ? '?' : ''}: ${
-            fieldType.type
-        },\n`;
+        typeString += `${getCommentBlock(field)}${safeObjectKey(field.name)}${
+            fieldType.isOptional ? '?' : ''
+        }: ${fieldType.type},\n`;
     });
 
     typeString = `${typeString}\n}`;

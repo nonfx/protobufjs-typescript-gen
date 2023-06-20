@@ -1,6 +1,6 @@
 {
   "name": "@cldcvr/protobufjs-typescript-gen",
-  "version": "1.0.3",
+  "version": "2.0.3",
   "main": "dist/index.js",
   "author": "Nikhil Verma <nikhilgotmail@gmail.com>",
   "license": "MIT",
