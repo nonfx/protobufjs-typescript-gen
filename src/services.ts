@@ -1,13 +1,14 @@
 import { Method, Service, Type } from 'protobufjs';
 import { getCommentBlock, getImport, Import, toLowerCaseFirstLetter } from './utils';
+import { ProtoGenOptions } from './options';
 
-export function getServiceInfo(service: Service) {
+export function getServiceInfo(service: Service, options: ProtoGenOptions) {
     let typeString = `export interface ${service.name} {\n`;
 
     let imports: Array<Import> = [];
 
     Object.values(service.methods).forEach((method) => {
-        const { code, typeImports } = getMethodCode(method);
+        const { code, typeImports } = getMethodCode(method, options);
         imports = imports.concat(typeImports);
         typeString += code;
     });
@@ -17,7 +18,7 @@ export function getServiceInfo(service: Service) {
     return { imports, typeString };
 }
 
-function getMethodCode(method: Method) {
+function getMethodCode(method: Method, options: ProtoGenOptions) {
     const typeImports: Array<Import> = [];
 
     method.resolve();
@@ -28,12 +29,14 @@ function getMethodCode(method: Method) {
 
     const { code: requestCode, import: requestImport } = getServiceTypeInfo(
         method,
-        method.resolvedRequestType
+        method.resolvedRequestType,
+        options
     );
 
     const { code: responseCode, import: responseImport } = getServiceTypeInfo(
         method,
-        method.resolvedResponseType
+        method.resolvedResponseType,
+        options
     );
 
     if (requestImport) {
@@ -53,7 +56,11 @@ function getMethodCode(method: Method) {
     };
 }
 
-function getServiceTypeInfo(method: Method, type: Type): { code: string; import: Import | null } {
+function getServiceTypeInfo(
+    method: Method,
+    type: Type,
+    options: ProtoGenOptions
+): { code: string; import: Import | null } {
     switch (type.fullName) {
         case '.google.protobuf.Value':
             return { code: 'any', import: null };
@@ -70,7 +77,7 @@ function getServiceTypeInfo(method: Method, type: Type): { code: string; import:
         default:
             return {
                 code: type.name,
-                import: getImport(method, type),
+                import: getImport(method, type, options),
             };
     }
 }

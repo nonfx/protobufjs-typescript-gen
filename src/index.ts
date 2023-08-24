@@ -109,7 +109,7 @@ function generateNamespace(namespace: Namespace, options: ProtoGenOptions) {
     // We have types in this namespace, we need to generate a file
     if (types.length > 0 || enums.length > 0 || services.length > 0) {
         const typeInfos = types.map((type) => getTypeInfo(type, options));
-        const serviceInfos = services.map(getServiceInfo);
+        const serviceInfos = services.map((service_) => getServiceInfo(service_, options));
 
         [...typeInfos, ...serviceInfos].forEach((typeInfo) => {
             typeInfo.imports.forEach(({ path, name }) => {
@@ -136,7 +136,7 @@ function generateNamespace(namespace: Namespace, options: ProtoGenOptions) {
         );
 
         // Ensure that type's parent has a file
-        const filePath = namespaceToPath(namespace.fullName);
+        const filePath = namespaceToPath(namespace.fullName, options);
 
         outputFileSync(`${path.join(options.outDir, filePath)}.ts`, file);
     }

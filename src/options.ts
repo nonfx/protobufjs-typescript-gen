@@ -41,6 +41,10 @@ export function vaidateOptions(options?: UserOptions): ProtoGenOptions {
         options.ignoreNamespaces = ['grpc', 'validate', 'google'];
     }
 
+    if (!('pathsToExclude' in options)) {
+        options.pathsToExclude = ['v0'];
+    }
+
     return options as ProtoGenOptions;
 }
 
@@ -49,6 +53,7 @@ export type ProtoGenOptions = Required<UserOptions>;
 export type UserOptions = {
     outDir: string;
     protocolDir: string;
+    pathsToExclude?: string[];
     protoCwd?: string;
     ignoreNamespaces?: string[];
     cwd?: string;

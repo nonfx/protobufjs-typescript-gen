@@ -22,7 +22,11 @@ export function getCommentBlock(object: ReflectionObject) {
     return typeString ? `${typeString}\n` : '';
 }
 
-export function getImport(object: ReflectionObject, targetObject: ReflectionObject | null) {
+export function getImport(
+    object: ReflectionObject,
+    targetObject: ReflectionObject | null,
+    options: ProtoGenOptions
+) {
     if (!targetObject) {
         return null;
     }
@@ -37,7 +41,7 @@ export function getImport(object: ReflectionObject, targetObject: ReflectionObje
 
     return {
         name: targetObject.name,
-        path: namespaceToPath(targetObject.fullName).replace(`/${targetObject.name}`, ''),
+        path: namespaceToPath(targetObject.fullName, options).replace(`/${targetObject.name}`, ''),
     };
 }
 
@@ -55,13 +59,11 @@ export function getClosestNamespace(root: ReflectionObject) {
     return null;
 }
 
-export function namespaceToPath(namespace: string) {
-    const pathsToExclude = ['v0'];
-
+export function namespaceToPath(namespace: string, options: ProtoGenOptions) {
     return namespace
         .split('.')
         .filter(Boolean)
-        .filter((str) => str.length > 0 && !pathsToExclude.includes(str))
+        .filter((str) => str.length > 0 && !options.pathsToExclude.includes(str))
         .join('/');
 }
 
@@ -158,7 +160,7 @@ export function fieldToTypescriptType(field: FieldBase, options: ProtoGenOptions
 
             if (field.resolvedType?.name) {
                 type = field.resolvedType.name;
-                typeImport = getImport(field, field.resolvedType);
+                typeImport = getImport(field, field.resolvedType, options);
             } else {
                 type = 'unknown';
             }
