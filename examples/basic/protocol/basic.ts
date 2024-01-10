@@ -47,6 +47,7 @@ export interface OptionalFields {
     aNestedMessage?: OptionalFields_Nested;
     aRepeatedMessage?: OptionalFields_Nested[];
     aRepeatedString?: string[];
+    anyValue?: unknown;
 }
 
 export interface HasExtensions {

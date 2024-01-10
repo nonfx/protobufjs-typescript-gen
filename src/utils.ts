@@ -139,6 +139,7 @@ export function fieldToTypescriptType(field: FieldBase, options: ProtoGenOptions
 
         // Custom protobuf mapping
         case 'google.protobuf.Value':
+        case 'google.protobuf.Any':
             type = options.anyToUnknown ? 'unknown' : 'any';
             break;
 

@@ -62,6 +62,7 @@ function getServiceTypeInfo(
     options: ProtoGenOptions
 ): { code: string; import: Import | null } {
     switch (type.fullName) {
+        case '.google.protobuf.Any':
         case '.google.protobuf.Value':
             return { code: 'any', import: null };
 
