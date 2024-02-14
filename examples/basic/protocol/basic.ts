@@ -54,6 +54,7 @@ export interface HasExtensions {
     str1?: string;
     str2?: string;
     str3?: string;
+    taxonomy1?: string;
 }
 
 export interface Complex_Nested {
@@ -207,3 +208,11 @@ export interface Deeply_Nested_Message {
 export interface Deeply_Nested {}
 
 export interface Deeply {}
+
+export interface BasicService {
+    // Options: [{"(google.api.http)":{"get":"/taxonomy-service/v1/taxonomy/domain"}}]
+    getDomain(): Promise<TestMessageWithOneof>;
+
+    // Options: [{"(google.api.http)":{"get":"/taxonomy-service/v1/taxonomy/domain/{domainLevel}"}}]
+    getDomainByLevel(request: MapValueMessageNoBinary): Promise<TestMapFieldsNoBinary>;
+}

@@ -30,13 +30,13 @@ function getMethodCode(method: Method, options: ProtoGenOptions) {
     const { code: requestCode, import: requestImport } = getServiceTypeInfo(
         method,
         method.resolvedRequestType,
-        options
+        options,
     );
 
     const { code: responseCode, import: responseImport } = getServiceTypeInfo(
         method,
         method.resolvedResponseType,
-        options
+        options,
     );
 
     if (requestImport) {
@@ -51,16 +51,16 @@ function getMethodCode(method: Method, options: ProtoGenOptions) {
         typeImports,
 
         code: `${getCommentBlock(method)}${toLowerCaseFirstLetter(
-            method.name
-        )}(request: ${requestCode}): Promise<${responseCode}>,\n\n`,
+            method.name,
+        )}(${requestCode ? `request: ${requestCode}` : ''}): Promise<${responseCode}>,\n\n`,
     };
 }
 
 function getServiceTypeInfo(
     method: Method,
     type: Type,
-    options: ProtoGenOptions
-): { code: string; import: Import | null } {
+    options: ProtoGenOptions,
+): { code: string | null; import: Import | null } {
     switch (type.fullName) {
         case '.google.protobuf.Any':
         case '.google.protobuf.Value':
@@ -73,7 +73,7 @@ function getServiceTypeInfo(
             return { code: 'Record<string, any>', import: null };
 
         case '.google.protobuf.Empty':
-            return { code: 'Record<string, never>', import: null };
+            return { code: null, import: null };
 
         default:
             return {

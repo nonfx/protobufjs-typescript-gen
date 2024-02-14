@@ -19,7 +19,7 @@ import {
 const root = new protobuf.Root();
 
 export async function generateProtocol(options: UserOptions) {
-    const finalOptions = vaidateOptions(options);
+    const finalOptions = await vaidateOptions(options);
 
     // The places where protocol files can be found
     const cwdList = [finalOptions.protocolDir, '/usr/local/include', ''];
@@ -44,13 +44,13 @@ export async function generateProtocol(options: UserOptions) {
         cwd: options.protocolDir,
     });
 
-    const promises: Array<Promise<any>> = [];
+    const promises: Array<Promise<protobuf.Root>> = [];
 
     files.forEach((file) => {
         promises.push(
             root.load(file, {
                 alternateCommentMode: true,
-            })
+            }),
         );
     });
 
@@ -67,7 +67,7 @@ export async function generateProtocol(options: UserOptions) {
     let generatedFiles = 0;
 
     // We only generate namespaces in the root
-    Object.entries(root.nested).forEach(([key, type]) => {
+    Object.entries(root.nested).forEach(async ([key, type]) => {
         for (const namespace of finalOptions.ignoreNamespaces) {
             if (key === namespace) {
                 return;
@@ -76,14 +76,14 @@ export async function generateProtocol(options: UserOptions) {
 
         if (isNamespaceConstructor(type)) {
             generatedFiles++;
-            generateNamespace(type, finalOptions);
+            await generateNamespace(type, finalOptions);
         }
     });
 
     console.log(`Generated ${generatedFiles} protocol files.`);
 }
 
-function generateNamespace(namespace: Namespace, options: ProtoGenOptions) {
+async function generateNamespace(namespace: Namespace, options: ProtoGenOptions) {
     if (!namespace.nested) {
         console.warn(`Namespace ${namespace.name} has no nested members to be generated`);
         return;
@@ -121,7 +121,7 @@ function generateNamespace(namespace: Namespace, options: ProtoGenOptions) {
             });
         });
 
-        const file = prettier.format(
+        const file = await prettier.format(
             `
             /* eslint-disable */
             ${getImportString(imports)}
@@ -132,7 +132,7 @@ function generateNamespace(namespace: Namespace, options: ProtoGenOptions) {
 
             ${serviceInfos.map((info) => info.typeString).join('\n\n')}
         `,
-            { ...options.prettierConfig, parser: 'typescript' }
+            { ...options.prettierConfig, parser: 'typescript' },
         );
 
         // Ensure that type's parent has a file

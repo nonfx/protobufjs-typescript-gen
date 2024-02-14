@@ -89,6 +89,7 @@ message HasExtensions {
   optional string str1 = 1;
   optional string str2 = 2;
   optional string str3 = 3;
+  optional string taxonomy_1 = 4;
 //   extensions 10 to max;
 }
 
@@ -276,3 +277,18 @@ message Deeply {
 }
 
 option java_multiple_files = true;
+
+
+service BasicService {
+  rpc GetDomain(google.protobuf.Empty) returns (TestMessageWithOneof) {
+    option (google.api.http) = {
+      get: "/taxonomy-service/v1/taxonomy/domain"
+    };
+  };
+
+  rpc GetDomainByLevel(MapValueMessageNoBinary) returns (TestMapFieldsNoBinary) {
+    option (google.api.http) = {
+      get: "/taxonomy-service/v1/taxonomy/domain/{domainLevel}"
+    };
+  };
+}

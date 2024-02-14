@@ -38,7 +38,7 @@ export function getTypeInfo(type_: Type, options: ProtoGenOptions) {
             imports.push(fieldType.typeImport);
         }
 
-        typeString += `${getCommentBlock(field)}${safeObjectKey(field.name)}${
+        typeString += `${getCommentBlock(field)}${safeObjectKey(snakeNumberCasetoCamelCase(field.name))}${
             fieldType.isOptional ? '?' : ''
         }: ${fieldType.type},\n`;
     });
@@ -46,4 +46,9 @@ export function getTypeInfo(type_: Type, options: ProtoGenOptions) {
     typeString = `${typeString}\n}`;
 
     return { imports, typeString };
+}
+
+// Fixes: https://github.com/protobufjs/protobuf.js/issues/1009
+function snakeNumberCasetoCamelCase(str: string) {
+    return str.replace(/^(\w+)(_)(\d+)$/, '$1$3');
 }
