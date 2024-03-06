@@ -22,7 +22,7 @@ export async function generateProtocol(options: UserOptions) {
     const finalOptions = await vaidateOptions(options);
 
     // The places where protocol files can be found
-    const cwdList = [finalOptions.protocolDir, '/usr/local/include', ''];
+    const cwdList = [finalOptions.protocolDir, '/opt/homebrew/include', '/usr/local/include', ''];
 
     if (finalOptions.protoCwd) {
         cwdList.unshift(finalOptions.protoCwd);
