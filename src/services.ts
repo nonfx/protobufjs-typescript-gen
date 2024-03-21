@@ -69,6 +69,9 @@ function getServiceTypeInfo(
         case '.google.protobuf.ListValue':
             return { code: 'any[]', import: null };
 
+        case '.google.protobuf.BoolValue':
+            return { code: 'boolean', import: null };
+
         case '.google.protobuf.Struct':
             return { code: 'Record<string, any>', import: null };
 

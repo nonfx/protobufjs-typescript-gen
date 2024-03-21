@@ -25,7 +25,7 @@ export function getCommentBlock(object: ReflectionObject) {
 export function getImport(
     object: ReflectionObject,
     targetObject: ReflectionObject | null,
-    options: ProtoGenOptions
+    options: ProtoGenOptions,
 ) {
     if (!targetObject) {
         return null;
@@ -126,6 +126,7 @@ export function fieldToTypescriptType(field: FieldBase, options: ProtoGenOptions
             break;
 
         case 'bool':
+        case 'google.protobuf.BoolValue':
             type = 'boolean';
             break;
 

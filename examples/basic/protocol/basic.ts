@@ -48,6 +48,7 @@ export interface OptionalFields {
     aRepeatedMessage?: OptionalFields_Nested[];
     aRepeatedString?: string[];
     anyValue?: unknown;
+    boolValue?: boolean;
 }
 
 export interface HasExtensions {
